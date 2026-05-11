@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title> Media Viewer</title>
+        <style>table,th,td{border:1px solid black}</style>
+    </head>
+    <body style="background-color:#e0a8e1">
+        <h1 style="color:rgb(13, 86, 61);font-family:fantasy;text-align:center;">Media Viewer</h1>
+        <h2 style="color:rgb(47, 116, 116);font-family: fantasy;">TV Shows</h2>
+       <div><button id="ShowViewAllButton" onclick="ShowViewAll()">View all</button></div>
+       <div>
+        <table class="table" id="TVTable">
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Genre</th>
+                <th>Year</th>
+                <th>Update</th>
+                <th>Delete</th>
+            </tr>
+        </table>
+       </div>
+    </body>
+    <script>
+    function ShowViewAll(){
+        document.getElementById('ShowViewAllButton').style.display="block"
+        document.getElementById('TVTable').style.display="block"
+    }
+    function getAllAjax(){
+        $.ajax({
+            "url":'tvshows',
+            "method":"GET",
+            "data":"",
+            "dataType":"JSON",
+            "success":function(result){
+                for (tvshow of result){
+                    addTVShowToTable(tvshow);
+                }
+            }
+        })
+    }
+    getAllAjax();
+    </script>
+</html>
