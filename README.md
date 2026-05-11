@@ -1,2 +1,21 @@
-# wsaa-project
-A repository containing coproject work for the Web Services and Applications module at ATU
+# Web Services and Applications Project
+A repository containing project work for the Web Services and Applications module at ATU.
+
+The repository contains a number of files:
+
+- [media_server.py](media_server.py): A Flask server which interacts with a database containing details of assorted TV shows and video games.
+- [DAO.py](DAO.py): A database object which calls and stores a database.
+- [media_server_ui.html](media_server_ui.html): A user interface for the server which allowas users to create, read, update and delete database entries.
+- [requirements.txt](requirements.txt.): A .txt file listing the requirements for running and interacting with the server.
+
+## Prerequisites
+
+The server is hosted on PythonAnywhere and users interact with it using an internet browser. If hosting on a local machine, users will need a command line interface, a code editor (such as[Visual Studio Code](https://code.visualstudio.com/)), a WAMP/LAMP/MAMP server, and access to a browser.
+
+### Running the server
+
+1. Clone the repository.
+1. Launch Visual Studio Code.
+1. Install the modules listed in [requirements.txt](requirements.txt.).
+1. Boot up the WAMP/LAMP/MAMP server.
+1. Open the home URL in the browser.
