@@ -20,10 +20,11 @@
         </style>
     </head>
     <body style="background-color:#e0a8e1">
-        <h1 style="color:rgb(13, 86, 61);font-family:fantasy;text-align:center;">Media Viewer</h1>
-        <h2 style="color:rgb(47, 116, 116);font-family: fantasy;">TV Shows</h2>
-       <div><button id="ShowViewAllTVButton" onclick="window.location=sylviachapmankent.eu.pythonanywhere.com/tvshows">View all TV Shows</button></div>
-       <div><button id="ShowViewByIDTVButton" onclick="window.location=sylviachapmankent.eu.pythonanywhere.com/videogames">View TV Shows by ID</button></div>
+        <h1 style="color:rgb(29, 2, 38);font-family:fantasy;text-align:center;">Media Viewer</h1>
+        <h2 style="color:rgb(25, 3, 28);font-family: fantasy;">TV Shows</h2>
+       <div><button id="ShowViewAllTVButton" onclick="ShowViewAllTV()">View all TV Shows</button></div>
+       <div><button id="ShowViewByIDTVButton" onclick="ShowViewTVByID()">View TV Shows by ID</button></div>
+       <div><button id="createTVButton" onclick="CreateTv()">Add New TV Show</button></div>
        <div>
         <table class="table" id="TVTable" style="width:100%">
             <caption>TV Shows</caption>
@@ -37,7 +38,10 @@
             </tr>
         </table>
        </div>
+        <h2 style="color:rgb(25, 3, 28);font-family: fantasy;">Video Games</h2>
        <div><button id="ShowViewAllVGbutton" onclick="ShowViewAllVG()">View all Video Games</button></div>
+       <div><button id="ShowViewByIDTVButton" onclick="ShowViewVGByID()">View video Games by ID</button></div>
+       <div><button id="createVGButton" onclick="CreateVideogame()">Add New Video Game</button></div>
        <div>
         <table class="table" id="VGTable" style="width:100%">
             <caption>Video Games</caption>
@@ -51,32 +55,403 @@
             </tr>
         </table>
        </div>
+       <div id="CreateUpdateTVForm" style="display: none"></div>
+            <h2><span id="CreateTVLabel">Create </span><span id="UpdateTvLabel2">Update</span> TV Show</h2>
+            <input type="hidden" name="Tvid"/>
+            Title <input type="text" name="TVtitle"/><br/>
+            Genre <input type="text" name="TVgenre"/><br/>
+            Year <input type="number" name="TVyear"/><br/>
+            <span><button id="ActuallyCreateTVButton" onclick="ActuallyCreateTV()">Create</button></span>
+            <span><button id="ActuallyUpdateTVButton" onclick="ActuallyUpdateTV()">Update</button></span>
+        </div>
+        <div id="CreateUpdateVGForm" style="display: none"></div>
+            <h2><span id="CreateVGLabel">Create </span><span id="UpdateVGLabel"> Update</span> Video Game</h2>
+            <input type="hidden" name="VGid"/>
+            Title <input type="text" name="VGtitle"/><br/>
+            Genre <input type="text" name="VGgenre"/><br/>
+            Year <input type="number" name="VGyear"/><br/>
+            <span><button id="ActuallyCreateVGButton" onclick="ActuallyCreateVG()">Create</button></span>
+            <span><button id="ActuallyUpdateVGButton" onclick="ActuallyUpdateVG()">Update</button></span>
+    </div>
     </body>
     <script>
 
-import ".media_server.py";
-
     function ShowViewAllTV(){
-        document.getElementById(media_server.getAlltvshows()).style.display="block"
+        document.getElementById('ShowViewAllTV').style.display="block"
         document.getElementById('TVTable').style.display="block"
+        document.getElementById("CreateUpdateTVForm").style.display="none"
     }
+    
     function ShowViewAllVG(){
-        document.getElementById('ShowViewAllVGButton').style.display="block"
+        document.getElementById('ShowViewAllVG').style.display="block"
         document.getElementById('VGTable').style.display="block"
+        document.getElementById("CreateUpdateVGForm").style.display="none"
     }
-    function getAllAjax(){
+
+    function ShowViewByIDTVButton(){
+        document.getElementById('ShowViewTVByID').style.display="block"
+        document.getElementById('TVTable').style.display="block"
+        document.getElementById("CreateUpdateTVForm").style.display="none"
+    }
+
+    function ShowViewByIDVGButton(){
+        document.getElementById('ShowViewVGByID').style.display="block"
+        document.getElementById('VGTable').style.display="block"
+        document.getElementById("CreateUpdateVGForm").style.display="none"
+    }
+
+    function CreateTv(){
+        document.getElementById("createTVButton").style.display="none"
+        document.getElementById("TVTable").style.display="none"
+        document.getElementById("CreateUpdateTVForm").style.display="block"
+        document.getElementById("CreateTVLabel").style.display="inline"
+        document.getElementById("UpdateTVLabel").style.display="none"
+        document.getElementById("ActuallyCreateTVButton").style.display="block"
+        document.getElementById("ActuallyUpdateTVButton").tyle.display="none"
+    }
+
+    function CreateVG(){
+        document.getElementById("createVGButton").style.display="none"
+        document.getElementById("VGTable").style.display="none"
+        document.getElementById("CreateUpdateVGForm").style.display="block"
+        document.getElementById("CreateVGLabel").style.display="inline"
+        document.getElementById("UpdateVGLabel").style.display="none"
+        document.getElementById("ActuallyCreatVGButton").style.display="block"
+        document.getElementById("ActuallyUpdateVGButton").tyle.display="none"
+    }
+
+    function UpdateTv(){
+        document.getElementById("createTVButton").style.display="none"
+        document.getElementById("TVTable").style.display="none"
+        document.getElementById("CreateUpdateTVForm").style.display="block"
+        document.getElementById("CreateTVLabel").style.display="none"
+        document.getElementById("UpdateTVLabel").style.display="inline"
+        document.getElementById("ActuallyCreateTVButton").style.display="none"
+        document.getElementById("ActuallyUpdateTVButton").tyle.display="block"
+        var rowElement=buttonElement.parentNode.parentNode
+        var tvshow = getTVShowFromRow(rowElement)
+        populateFormWithTV(tvshow)
+    }
+    function UpdateVG(){
+        document.getElementById("createVGButton").style.display="none"
+        document.getElementById("VGTable").style.display="none"
+        document.getElementById("CreateUpdateVGForm").style.display="block"
+        document.getElementById("CreateVGLabel").style.display="none"
+        document.getElementById("UpdateVGLabel").style.display="inline"
+        document.getElementById("ActuallyCreatVGButton").style.display="none"
+        document.getElementById("ActuallyUpdateVGButton").tyle.display="block"
+    }
+
+    function ActuallyCreateTV(){
+        var form = document.getElementById('CreateUpdateTVForm')
+        var tvshow = {}
+        tvshow.title = form.querySelector('input[name="title"]').value
+        tvshow.genre = form.querySelector('input[name="genre"]').value
+        tvshow.year = form.querySelector('input[name="year"]').value
+        console.log(JSON.stringify(tvshow))
+        createTVAjax(tvshow)
+    }
+    function ActuallyCreateVG(){
+        var form = document.getElementById('CreateUpdateVGForm')
+        var videogame = {}
+        videogame.title = form.querySelector('input[name="title"]').value
+        videogame.genre = form.querySelector('input[name="genre"]').value
+        videogame.year = form.querySelector('input[name="year"]').value
+        console.log(JSON.stringify(videogame))
+        createVGAjax(videogame)
+    }
+    function ActuallyUpdateTV(){
+        var tvshow = getTVShowFromForm();
+        var rowElement = document.getElementById(tvshow.id);
+        updateTVAjax(tvshow);
+        setTVInRow(rowElement,tvshow);
+        clearForm();
+        showViewAll();
+    }
+    function ActuallyUpdaeVG(){
+        var videogame = getVideoGameFromForm();
+        var rowElement = document.getElementById(videogame.id);
+        updateTVAjax(videogame);
+        setTVInRow(rowElement,videogame);
+        clearForm();
+        showViewAll();
+    }
+    function DeleteTV(r){
+        var tableElement = document.getElementById('TVTable');
+        var rowElement = r.parentNode.parentNode;
+        var index = rowElement.rowIndex;
+        deleteTVAjax(rowElement.getAttribute("id"));
+        tableElement.deleteRow(index);
+    }
+
+    function DeleteVG(r){
+        var tableElement = document.getElementById('VGTable');
+        var rowElement = r.parentNode.parentNode;
+        var index = rowElement.rowIndex;
+        deleteVGAjax(rowElement.getAttribute("id"));
+        tableElement.deleteRow(index);
+    }
+
+    function addTVToTable(tvshow){
+        var tableElement = document.getElementById('TVTable')
+        var rowElement = tableElement.insertRow(-1)
+        rowElement.setAttribute('id',tvshow.id)
+        var cell1 = rowElement.insertCell(0);
+        cell1.innerHTML = tvshow.id
+        var cell2 = rowElement.insertCell(1);
+        cell2.innerHTML = tvshow.title
+        var cell3 = rowElement.insertCell(2);
+        cell3.innerHTML = tvshow.genre
+        var cell4 = rowElement.insertCell(3);
+        cell4.innerHTML = tvshow.year
+        var cell5 = rowElement.insertCell(4);
+        cell5.innerHTML = '<button onclick="showTVUpdate(this)">Update</button>'
+        var cell6 = rowElement.insertCell(5);
+        cell6.innerHTML = '<button onclick=DeleteTV(this)>delete</button>'
+    }
+
+    function addVGToTable(videogame){
+        var tableElement = document.getElementById('VGTable')
+        var rowElement = tableElement.insertRow(-1)
+        rowElement.setAttribute('id',videogame.id)
+        var cell1 = rowElement.insertCell(0);
+        cell1.innerHTML = videogame.id
+        var cell2 = rowElement.insertCell(1);
+        cell2.innerHTML = videogame.title
+        var cell3 = rowElement.insertCell(2);
+        cell3.innerHTML = videogame.genre
+        var cell4 = rowElement.insertCell(3);
+        cell4.innerHTML = vdeogame.year
+        var cell5 = rowElement.insertCell(4);
+        cell5.innerHTML = '<button onclick="showVGUpdate(this)">Update</button>'
+        var cell6 = rowElement.insertCell(5);
+        cell6.innerHTML = '<button onclick=DeleteVG(this)>delete</button>'
+    }
+
+    function clearForm(){
+        var form = document.getElementById('createUpdateForm')
+
+        form.querySelector('input[name="title"]').value=''
+        form.querySelector('input[name="genre"]').value=''
+        form.querySelector('input[name="year"]').value=''
+    }
+
+    function getTVFromRow(rowElement){
+        var tvshow ={}
+        tvshow.id  = rowElement.getAttribute('id')
+        tvshow.title = rowElement.cells[1].firstChild.textContent
+        tvshow.genre = rowElement.cells[2].firstChild.textContent
+        tvshow.year = parseInt(rowElement.cells[3].firstChild.textContent,10)
+        return tvshow
+    }
+
+    function getVGFromRow(rowElement){
+        var videogame ={}
+        videogame.id  = rowElement.getAttribute('id')
+        tvshow.title = rowElement.cells[1].firstChild.textContent
+        tvshow.genre = rowElement.cells[2].firstChild.textContent
+        tvshow.year = parseInt(rowElement.cells[3].firstChild.textContent,10)
+        return videogame
+    }
+
+    function setTVInRow(rowElement, tvshow){
+        rowElement.cells[0].firstChild.textContent= tvshow.id  
+        rowElement.cells[1].firstChild.textContent= tvshow.title 
+        rowElement.cells[2].firstChild.textContent= tvshow.genre
+        rowElement.cells[3].firstChild.textContent= tvshow.year
+    }
+
+    function setVGInRow(rowElement, videogame){
+        rowElement.cells[0].firstChild.textContent= videogame.id  
+        rowElement.cells[1].firstChild.textContent= videogame.title 
+        rowElement.cells[2].firstChild.textContent= videogame.genre
+        rowElement.cells[3].firstChild.textContent= videogame.year
+    }
+    function populateFormWithTV(tvshow){
+        var form = document.getElementById('CreateUpdateTVForm')
+        form.querySelector('input[name="id"]').disabled = true
+        form.querySelector('input[name="id"]').value  = tvshow.id
+        form.querySelector('input[name="title"]').value= tvshow.title
+        form.querySelector('input[name="genre"]').value= tvshow.genre
+        form.querySelector('input[name="year"]').value= tvshow.year
+        return tvshow
+    }
+
+    function populateFormWithVG(videogame){
+        var form = document.getElementById('CreateUpdateVGForm')
+        form.querySelector('input[name="id"]').disabled = true
+        form.querySelector('input[name="id"]').value  = videogame.id
+        form.querySelector('input[name="title"]').value= videogame.title
+        form.querySelector('input[name="genre"]').value= videogame.genre
+        form.querySelector('input[name="year"]').value= videogame.year
+        return videogame
+    }
+
+    function getTVFromForm(){
+        var form = document.getElementById('CreateUpdateTVForm')
+        var tvshow = {}
+        tvshow.id = form.querySelector('input[name="id"]').value
+        tvshow.title = form.querySelector('input[name="title"]').value
+        tvshow.genre = form.querySelector('input[name="genre"]').value
+        tvshow.year = parseInt(form.querySelector('input[name="year"]').value,10)
+        console.log(JSON.stringify(tvshow))
+        return tvshow
+    }
+    function getVGFromForm(){
+        var form = document.getElementById('CreateUpdateVGForm')
+        var videogame = {}
+        videogame.id = form.querySelector('input[name="id"]').value
+        videogame.title = form.querySelector('input[name="title"]').value
+        videogame.genre = form.querySelector('input[name="genre"]').value
+        videogame.year = parseInt(form.querySelector('input[name="year"]').value,10)
+        console.log(JSON.stringify(videogame))
+        return videogame
+    }
+    function getAllTVAjax(){
         $.ajax({
-            "url":'tvshows',
+            "url": "/tvshows",
             "method":"GET",
             "data":"",
-            "dataType":"JSON",
+            "dataType": "JSON",
             "success":function(result){
                 for (tvshow of result){
-                    addTVShowToTable(tvshow);
+                    addTVToTable(tvshow);
                 }
+                
+            },
+            "error":function(xhr,status,error){
+                console.log("error: "+status+" msg:"+error);
             }
-        })
+        });
+
     }
-    getAllAjax();
+    function getAllVGAjax(){
+        $.ajax({
+            "url": "/videogames",
+            "method":"GET",
+            "data":"",
+            "dataType": "JSON",
+            "success":function(result){
+                for (videogame of result){
+                    addVGToTable(videogame);
+                }
+                
+            },
+            "error":function(xhr,status,error){
+                console.log("error: "+status+" msg:"+error);
+            }
+        });
+
+    }
+    function createTVAjax(tvshow){
+        console.log(JSON.stringify(tvshow));
+        $.ajax({
+            "url": "/tvshows",
+            "method":"POST",
+            "data":JSON.stringify(tvshow),
+            "dataType": "JSON",
+            contentType: "application/json; charset=utf-8",
+            "success":function(result){
+                tvshow.id = result.id
+                addTVToTable(tvshow)
+                clearForm()
+                showViewAll()
+            },
+            "error":function(xhr,status,error){
+                console.log("error: "+status+" msg:"+error);
+            }
+        });
+    }
+    function createVGAjax(videogame){
+        console.log(JSON.stringify(videogame));
+        $.ajax({
+            "url": "/videogames",
+            "method":"POST",
+            "data":JSON.stringify(videogame),
+            "dataType": "JSON",
+            contentType: "application/json; charset=utf-8",
+            "success":function(result){
+                tvshow.id = result.id
+                addVGToTable(videogame)
+                clearForm()
+                showViewAll()
+            },
+            "error":function(xhr,status,error){
+                console.log("error: "+status+" msg:"+error);
+            }
+        });
+    }
+
+    function updateTVAjax(tvshow){
+        console.log(JSON.stringify(tvshow));
+        $.ajax({
+            "url": "/tvshows/"+encodeURI(tvshow.id),
+            "method":"PUT",
+            "data":JSON.stringify(tvshow),
+            "dataType": "JSON",
+            contentType: "application/json ; charset=utf-8",
+            "success":function(result){
+                console.log(result);
+                  
+            },
+            "error":function(xhr,status,error){
+                console.log("error: "+status+" msg:"+error);
+            }
+        });
+    }
+
+    function updateVGAjax(videogame){
+        console.log(JSON.stringify(videogame));
+        $.ajax({
+            "url": "/videogames/"+encodeURI(videogame.id),
+            "method":"PUT",
+            "data":JSON.stringify(videogame),
+            "dataType": "JSON",
+            contentType: "application/json ; charset=utf-8",
+            "success":function(result){
+                console.log(result);
+                  
+            },
+            "error":function(xhr,status,error){
+                console.log("error: "+status+" msg:"+error);
+            }
+        });
+    }
+
+    function deleteTVAjax(id){
+        $.ajax({
+            "url": "/tvshows/"+encodeURI(id),
+            "method":"DELETE",
+            "data":"",
+            "dataType": "JSON",
+            contentType: "application/json; charset=utf-8",
+            "success":function(result){
+                //console.log(result);
+                  
+            },
+            "error":function(xhr,status,error){
+                console.log("error: "+status+" msg:"+error);
+            }
+        });
+    }
+
+    function deleteVGAjax(id){
+        $.ajax({
+            "url": "/videogames/"+encodeURI(id),
+            "method":"DELETE",
+            "data":"",
+            "dataType": "JSON",
+            contentType: "application/json; charset=utf-8",
+            "success":function(result){
+                //console.log(result);
+                  
+            },
+            "error":function(xhr,status,error){
+                console.log("error: "+status+" msg:"+error);
+            }
+        });
+    }
+    getAllTVAjax();
+    getAllVGAjax();
     </script>
 </html>
