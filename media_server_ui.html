@@ -1,16 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
+        <meta charset="UTF-8">
         <title> Media Viewer</title>
-        <style>table,th,td{border:1px solid black}</style>
+        <style>table#TVTable{
+            border:1px solid black; 
+            border-collapse:collapse;
+            padding:20px;
+            background-color: cornflowerblue;
+            font-family: fantasy;
+            }
+            table#VGTable{
+            border:1px solid black; 
+            border-collapse:collapse;
+            padding:20px;
+            background-color: rgb(83, 215, 149);
+            font-family: fantasy;
+            }
+        </style>
     </head>
     <body style="background-color:#e0a8e1">
         <h1 style="color:rgb(13, 86, 61);font-family:fantasy;text-align:center;">Media Viewer</h1>
         <h2 style="color:rgb(47, 116, 116);font-family: fantasy;">TV Shows</h2>
-       <div><button id="ShowViewAllButton" onclick="ShowViewAll()">View all</button></div>
+       <div><button id="ShowViewAllTVButton" onclick="window.location=sylviachapmankent.pythonanywhere.com/tvshows">View all TV Shows</button></div>
+       <div><button id="ShowViewByIDTVButton" onclick="window.location=sylviachapmankent.pythonanywhere.com/videogames">View TV Shows by ID</button></div>
        <div>
-        <table class="table" id="TVTable">
+        <table class="table" id="TVTable" style="width:100%">
+            <caption>TV Shows</caption>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Genre</th>
+                <th>Year</th>
+                <th>Update</th>
+                <th>Delete</th>
+            </tr>
+        </table>
+       </div>
+       <div><button id="ShowViewAllVGbutton" onclick="ShowViewAllVG()">View all Video Games</button></div>
+       <div>
+        <table class="table" id="VGTable" style="width:100%">
+            <caption>Video Games</caption>
             <tr>
                 <th>ID</th>
                 <th>Title</th>
@@ -23,9 +53,16 @@
        </div>
     </body>
     <script>
-    function ShowViewAll(){
-        document.getElementById('ShowViewAllButton').style.display="block"
+
+import ".media_server.py";
+
+    function ShowViewAllTV(){
+        document.getElementById(media_server.getAlltvshows()).style.display="block"
         document.getElementById('TVTable').style.display="block"
+    }
+    function ShowViewAllVG(){
+        document.getElementById('ShowViewAllVGButton').style.display="block"
+        document.getElementById('VGTable').style.display="block"
     }
     function getAllAjax(){
         $.ajax({

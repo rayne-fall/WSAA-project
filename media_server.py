@@ -43,7 +43,7 @@ def createTV():
     return jsonify(addedshow)
 
 # update one of the tv shows in the database
-@app.route('tvshows/<int:id>', methods=['PUT'])
+@app.route('/tvshows/<int:id>', methods=['PUT'])
 @cross_origin()
 def updateTV(id):
     foundShow= mediaDAO.findTVByID(id)
@@ -99,7 +99,7 @@ def create():
     return jsonify(addedgame)
 
 # update one of the video games in the database
-@app.route('videogames/<int:id>', methods=['PUT'])
+@app.route('/videogames/<int:id>', methods=['PUT'])
 @cross_origin()
 def updateVideogame(id):
     foundGame= mediaDAO.findVideoGameByID(id)
